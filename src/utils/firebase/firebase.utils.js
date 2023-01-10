@@ -3,7 +3,7 @@ import { getAuth, signInWithPopup, signInWithRedirect, GoogleAuthProvider } from
 
 import { firebaseConfig } from "../../../firebaseConfig";
 
-// Initialize Firebase
+// Initialize FirebaseApp
 const firebaseApp = initializeApp(firebaseConfig);
 
 const provider = new GoogleAuthProvider();
