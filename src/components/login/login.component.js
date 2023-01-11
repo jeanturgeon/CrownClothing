@@ -1,11 +1,11 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 
 import './login.styles.scss';
 import { signInWithGooglePopup, createUserDocFromAuth, loginWithEmailAndPassword } from "../../utils/firebase/firebase.utils";
 import {FormInput} from '../ui/form-input.component';
 import { Button } from "../ui/button.component";
-import { ErrorResponse } from "@remix-run/router";
-import { AuthErrorCodes } from "firebase/auth";
+import { UserContext } from "../../contexts/user.context";
+
 
 const defaultFormFields= {    
     email:'',
@@ -13,9 +13,10 @@ const defaultFormFields= {
 }
 
 export default function LoginForm() {
-
     const [formFields, setFormFields] = useState(defaultFormFields);
     const {email, password} = formFields;
+
+    const {setCurrentUser} = useContext(UserContext)
 
     const handleChange = (event) => {
         const {name, value} = event.target //name of the input triggering the event
@@ -34,13 +35,13 @@ export default function LoginForm() {
     const handleSubmit = async (event) => {
         event.preventDefault();
       
-
         try {
             const response = await loginWithEmailAndPassword(email, password);
+            setCurrentUser(response.user)
             resetFormFields();
             
         } catch (error){
-            switch(AuthErrorCodes.code) {
+            switch(error.code) {
                 case 'auth/user-not-found':
                     alert('email address not found');
                     break
