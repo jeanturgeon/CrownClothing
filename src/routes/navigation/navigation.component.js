@@ -16,7 +16,7 @@ export default function Navigation(){
             <Link to='/shop' className="navlink" >
                 SHOP
             </Link>          
-            <Link to='/sign-in' className="navlink" >
+            <Link to='/auth' className="navlink" >
                 SIGN IN 
             </Link>
           </div>

@@ -44,7 +44,6 @@ export default function RegistrationForm() {
 
     };
 
- 
 
     return (
         <div className="registration-form-container">
@@ -57,7 +56,7 @@ export default function RegistrationForm() {
                         type:'text',
                         name:'displayName',
                         required:true,
-                        onChange:{handleChange},
+                        onChange:handleChange,
                         value:displayName,
                     }}
                 />
@@ -67,7 +66,7 @@ export default function RegistrationForm() {
                         type:'email',
                         name:'email',
                         required:true,
-                        onChange:{handleChange},
+                        onChange:handleChange,
                         value:email,
                     }}
                 />
@@ -77,7 +76,7 @@ export default function RegistrationForm() {
                         type:'password',
                         name:'password',
                         required:true,
-                        onChange:{handleChange},
+                        onChange:handleChange,
                         value:password,
                     }}
                 />
@@ -87,7 +86,7 @@ export default function RegistrationForm() {
                         type:'password',
                         name:'confirmPassword',
                         required:true,
-                        onChange:{handleChange},
+                        onChange:handleChange,
                         value:confirmPassword,
                     }}
                 />

@@ -1,18 +1,23 @@
 // import { useEffect } from "react";
 // import { getRedirectResult } from "firebase/auth";
+// import {auth, signInWithGoogleRedirect} from "../../utils/firebase/firebase.utils";
 
-import { 
-    // auth,
-    // signInWithGoogleRedirect,
-    signInWithGooglePopup,
-    createUserDocFromAuth,} from "../../utils/firebase/firebase.utils";
-
+import './authentication.styles.scss'
 import RegistrationForm from "../../components/register/registration-form.component";
+import LoginForm from "../../components/login/login.component";
+
+export default function Authentication() {
 
 
+    return (
+        <div className="auth-container">              
+            <LoginForm />
+            <RegistrationForm />
+        </div>
+    )
+}
 
 
-export default function SignIn() {
 //     const getRedirectResponse = async () => {
 //         const response = await getRedirectResult(auth);
 // //because the user is redirected, he is actually leaving our app to authenticate
@@ -24,17 +29,4 @@ export default function SignIn() {
 //     } 
     // useEffect(()=> {
     //     getRedirectResponse();
-    // },[]);
-        
-    const logGoogleUser = async () => {
-        const response = await signInWithGooglePopup();
-        const userDocRef = await createUserDocFromAuth(response.user);
-    }
-
-    return (
-        <>            
-            <button onClick={logGoogleUser}>Sign in with Google</button>           
-            <RegistrationForm />
-        </>
-    )
-}
+    // },[]);        
