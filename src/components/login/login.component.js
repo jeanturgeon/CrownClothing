@@ -1,11 +1,9 @@
-import { useState, useContext } from "react";
+import { useState } from "react";
 
 import './login.styles.scss';
-import { signInWithGooglePopup, createUserDocFromAuth, loginWithEmailAndPassword } from "../../utils/firebase/firebase.utils";
+import { signInWithGooglePopup, loginWithEmailAndPassword } from "../../utils/firebase/firebase.utils";
 import {FormInput} from '../ui/form-input.component';
 import { Button } from "../ui/button.component";
-import { UserContext } from "../../contexts/user.context";
-
 
 const defaultFormFields= {    
     email:'',
@@ -14,9 +12,7 @@ const defaultFormFields= {
 
 export default function LoginForm() {
     const [formFields, setFormFields] = useState(defaultFormFields);
-    const {email, password} = formFields;
-
-    const {setCurrentUser} = useContext(UserContext)
+    const {email, password} = formFields;    
 
     const handleChange = (event) => {
         const {name, value} = event.target //name of the input triggering the event
@@ -28,16 +24,14 @@ export default function LoginForm() {
     };
 
     const loginWithGoogle = async () => {
-        const response = await signInWithGooglePopup();
-        await createUserDocFromAuth(response.user);
+        await signInWithGooglePopup();                
     }
 
     const handleSubmit = async (event) => {
         event.preventDefault();
       
         try {
-            const response = await loginWithEmailAndPassword(email, password);
-            setCurrentUser(response.user)
+            await loginWithEmailAndPassword(email, password);            
             resetFormFields();
             
         } catch (error){
