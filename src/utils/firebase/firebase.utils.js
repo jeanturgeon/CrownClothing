@@ -1,3 +1,5 @@
+import { firebaseConfig } from '../../firebaseConfig';
+
 import { initializeApp } from 'firebase/app';
 import {
   getAuth,
@@ -7,19 +9,21 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut,
-  onAuthStateChanged,
+  onAuthStateChanged,  
 } from 'firebase/auth';
-import { getFirestore, doc, getDoc, setDoc } from 'firebase/firestore';
 
-const firebaseConfig = {
-  apiKey: 'AIzaSyDDU4V-_QV3M8GyhC9SVieRTDM4dbiT0Yk',
-  authDomain: 'crwn-clothing-db-98d4d.firebaseapp.com',
-  projectId: 'crwn-clothing-db-98d4d',
-  storageBucket: 'crwn-clothing-db-98d4d.appspot.com',
-  messagingSenderId: '626766232035',
-  appId: '1:626766232035:web:506621582dab103a4d08d6',
-};
+import {
+  getFirestore,
+  doc,
+  getDoc, 
+  setDoc,
+  collection,
+  writeBatch,
+  query,
+  getDocs,
+} from 'firebase/firestore';
 
+// eslint-disable-next-line
 const firebaseApp = initializeApp(firebaseConfig);
 
 const googleProvider = new GoogleAuthProvider();
@@ -81,3 +85,29 @@ export const signOutUser = async () => await signOut(auth);
 
 export const onAuthStateChangedListener = (callback) =>
   onAuthStateChanged(auth, callback);
+
+export const addCollectionAndDocuments = async (collectionName, documentToAdd) => {
+  const collectionRef = collection(db, collectionName); //get collection reference, or create it if it doesn't exist
+  const batch = writeBatch(db);
+
+  documentToAdd.forEach((document)=> {
+    const docRef = doc(collectionRef, document.title.toLowerCase());
+    batch.set(docRef, document);
+  })
+
+  await batch.commit();
+  console.log('done');
+};
+
+export const getCategoriesAndDocuments = async() => {
+  const collectionRef = collection(db, 'categories');
+  const newQuery = query(collectionRef)
+
+  const querySnapshot = await (getDocs(newQuery));
+  const categoryMap = querySnapshot.docs.reduce((accumulator, docSnapshot)=>{
+    const {title, items} = docSnapshot.data();
+    accumulator[title.toLowerCase()] = items;
+    return accumulator
+  }, {})
+  return categoryMap;
+};
