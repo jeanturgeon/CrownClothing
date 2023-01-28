@@ -2,12 +2,12 @@ import { useContext } from 'react';
 
 import { CartContext } from '../../contexts/cart.context';
 
-import Button from '../button/button.component';
-import CartItem from '../cart-item/cart-item.component';
+import {Button} from '../button/button.component';
+import {CartItem} from '../cart-item/cart-item.component';
 
 import './cart-dropdown.styles.scss';
 
-const CartDropdown = () => {
+export const CartDropdown = () => {
   const { cartItems } = useContext(CartContext);
 
   return (
@@ -26,4 +26,4 @@ const CartDropdown = () => {
   );
 };
 
-export default CartDropdown;
+

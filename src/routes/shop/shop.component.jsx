@@ -1,12 +1,12 @@
 import { useContext } from 'react';
 
-import ProductCard from '../../components/product-card/product-card.component';
+import {ProductCard} from '../../components/product-card/product-card.component';
 
 import { ProductsContext } from '../../contexts/products.context';
 
 import './shop.styles.scss';
 
-const Shop = () => {
+export default function Shop(){
   const { products } = useContext(ProductsContext);
 
   return (
@@ -17,5 +17,3 @@ const Shop = () => {
     </div>
   );
 };
-
-export default Shop;

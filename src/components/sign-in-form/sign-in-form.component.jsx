@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
-import FormInput from '../form-input/form-input.component';
-import Button from '../button/button.component';
+import {FormInput} from '../form-input/form-input.component';
+import {Button} from '../button/button.component';
 
 import {
   signInAuthUserWithEmailAndPassword,
@@ -15,7 +15,7 @@ const defaultFormFields = {
   password: '',
 };
 
-const SignInForm = () => {
+export const SignInForm = () => {
   const [formFields, setFormFields] = useState(defaultFormFields);
   const { email, password } = formFields;
 
@@ -76,5 +76,3 @@ const SignInForm = () => {
     </div>
   );
 };
-
-export default SignInForm;
