@@ -1,81 +1,83 @@
-import { initializeApp } from "firebase/app";
-import { 
-    // signInWithRedirect,
-    getAuth,
-    signInWithPopup,    
-    GoogleAuthProvider,
-    createUserWithEmailAndPassword,
-    signInWithEmailAndPassword,
-    signOut,
-    onAuthStateChanged,
+import { initializeApp } from 'firebase/app';
+import {
+  getAuth,
+  signInWithRedirect,
+  signInWithPopup,
+  GoogleAuthProvider,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signOut,
+  onAuthStateChanged,
+} from 'firebase/auth';
+import { getFirestore, doc, getDoc, setDoc } from 'firebase/firestore';
 
-} from "firebase/auth";
-import { getFirestore, doc, getDoc, setDoc} from 'firebase/firestore';
+const firebaseConfig = {
+  apiKey: 'AIzaSyDDU4V-_QV3M8GyhC9SVieRTDM4dbiT0Yk',
+  authDomain: 'crwn-clothing-db-98d4d.firebaseapp.com',
+  projectId: 'crwn-clothing-db-98d4d',
+  storageBucket: 'crwn-clothing-db-98d4d.appspot.com',
+  messagingSenderId: '626766232035',
+  appId: '1:626766232035:web:506621582dab103a4d08d6',
+};
 
-import { firebaseConfig } from "../../firebaseConfig";
-
-// Initialize FirebaseApp
 const firebaseApp = initializeApp(firebaseConfig);
 
-//if we wanted to also offer login with Facebook for example, we would need a separate Provider for that
-const googleProvider = new GoogleAuthProvider(); 
+const googleProvider = new GoogleAuthProvider();
+
 googleProvider.setCustomParameters({
-    prompt: 'select_account'
+  prompt: 'select_account',
 });
 
 export const auth = getAuth();
-export const signInWithGooglePopup = () => signInWithPopup(auth, googleProvider);
-// export const signInWithGoogleRedirect = () => signInWithRedirect(auth, googleProvider);
+export const signInWithGooglePopup = () =>
+  signInWithPopup(auth, googleProvider);
+export const signInWithGoogleRedirect = () =>
+  signInWithRedirect(auth, googleProvider);
 
-export const firebaseDB = getFirestore();
+export const db = getFirestore();
 
-export const createUserDocFromAuth = async (userAuth, additionalInfo={}) => {
-    if(!userAuth) return;
+export const createUserDocumentFromAuth = async (
+  userAuth,
+  additionalInformation = {}
+) => {
+  if (!userAuth) return;
 
-     //create document reference:
-    const userDocRef = doc(firebaseDB, 'users', userAuth.uid);
+  const userDocRef = doc(db, 'users', userAuth.uid);
 
-     //see if that reference already exists, then creating it if it doesn't
-    const userSnapshot = await getDoc(userDocRef);
-    if(!userSnapshot.exists()) {
-        const {displayName, email} = userAuth;
-        const createdAt = new Date();
+  const userSnapshot = await getDoc(userDocRef);
 
-        try {
-            await setDoc(userDocRef, {
-                displayName,
-                email,
-                createdAt,
-                ...additionalInfo //we're adding this for the case of a registration with email and password
-                //since the displayName we get from firebase is null when getting it from this auth method.
-                //it will instead come from our own Registration form
-            });
-        } catch (error) {
-            console.log("Error creating user: ", error.message);
-        }
+  if (!userSnapshot.exists()) {
+    const { displayName, email } = userAuth;
+    const createdAt = new Date();
+
+    try {
+      await setDoc(userDocRef, {
+        displayName,
+        email,
+        createdAt,
+        ...additionalInformation,
+      });
+    } catch (error) {
+      console.log('error creating the user', error.message);
     }
+  }
 
-    //if it does exist, then we just return it:
-    return userDocRef;
-
+  return userDocRef;
 };
 
 export const createAuthUserWithEmailAndPassword = async (email, password) => {
-    if(!email || !password) return;
+  if (!email || !password) return;
 
-    return await createUserWithEmailAndPassword(auth, email, password);
-}
+  return await createUserWithEmailAndPassword(auth, email, password);
+};
 
-export const loginWithEmailAndPassword = async (email, password) => {
-    if(!email || !password) return;
+export const signInAuthUserWithEmailAndPassword = async (email, password) => {
+  if (!email || !password) return;
 
-    return await signInWithEmailAndPassword(auth, email, password);
-}
+  return await signInWithEmailAndPassword(auth, email, password);
+};
 
-export const logOutUser = async () => signOut(auth);
+export const signOutUser = async () => await signOut(auth);
 
-export const onAuthStateChangedListener = (authChangeFunction) => onAuthStateChanged(auth, authChangeFunction);
-/* 
-* onAuthStateChanged is a PERMANENT listener that is always active, waiting for an auth state change
-* authChangeFunction is a function we want to pass to onAuthStateChanged whenever our auth state changes 
-*/
+export const onAuthStateChangedListener = (callback) =>
+  onAuthStateChanged(auth, callback);
