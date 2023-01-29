@@ -17,12 +17,16 @@ export default function Category() {
 
 
     return(
-        <div className='category-container'>
-            {
-                products &&  products.map(product => <ProductCard key={product.id} product={product} />)
-                //because the fetching of products is asyncronous, 
-                //this ensures that only when we have a value in products, are we rendering the component
-            }
-        </div>
+        <>
+            <h2 className='shop-category-title'>{category}</h2>
+            <div className='category-container'>
+                
+                {
+                    products &&  products.map(product => <ProductCard key={product.id} product={product} />)
+                    //because the fetching of products is asyncronous, 
+                    //this ensures that only when we have a value in products, are we rendering the component
+                }
+            </div>
+        </>
     );
 }

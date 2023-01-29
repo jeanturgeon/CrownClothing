@@ -2,5 +2,12 @@
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 20px;
-    row-gap: 50px;
+    row-gap: 50px;  
+}
+
+.shop-category-title {
+    font-size: 42px;
+    margin-bottom: 25px;
+    text-transform: uppercase;
+    text-align: center;
 }
