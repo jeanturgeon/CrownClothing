@@ -11,6 +11,7 @@ export default function Checkout(){
         if(isCartOpen) {
             setIsCartOpen(false);
         }
+    // eslint-disable-next-line
     },[]);
 
     return (
